@@ -9,7 +9,7 @@ import aiohttp
 from .const import (
     DOMAIN,
     CONF_API_KEY,
-    CONF_ACCOUNT_ID,
+    CONF_WHATSAPP_ACCOUNT,
     API_BASE_URL,
 )
 
