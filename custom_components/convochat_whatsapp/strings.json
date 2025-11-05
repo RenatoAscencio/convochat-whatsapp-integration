@@ -2,18 +2,25 @@
   "config": {
     "step": {
       "user": {
-        "title": "ConvoChat WhatsApp Configuration",
-        "description": "Configure your ConvoChat API credentials. Get these from https://convo.chat",
+        "title": "ConvoChat WhatsApp - API Key",
+        "description": "Enter your ConvoChat API Key. Get it from Tools → API Keys at https://convo.chat",
         "data": {
-          "api_key": "API Key",
-          "account_id": "Account ID"
+          "api_key": "API Key (secret)"
+        }
+      },
+      "select_account": {
+        "title": "Select WhatsApp Account",
+        "description": "Choose which WhatsApp account to use for sending messages",
+        "data": {
+          "whatsapp_account": "WhatsApp Account"
         }
       }
     },
     "error": {
       "cannot_connect": "Failed to connect to ConvoChat API",
-      "invalid_auth": "Invalid API credentials",
-      "unknown": "Unexpected error"
+      "invalid_auth": "Invalid API Key",
+      "no_accounts": "No WhatsApp accounts found. Please link a WhatsApp account at https://convo.chat first",
+      "unknown": "Unexpected error occurred"
     },
     "abort": {
       "already_configured": "Integration is already configured"
@@ -23,10 +30,10 @@
     "step": {
       "init": {
         "title": "ConvoChat WhatsApp Options",
-        "description": "Update your ConvoChat API credentials",
+        "description": "Update your ConvoChat configuration",
         "data": {
-          "api_key": "API Key",
-          "account_id": "Account ID"
+          "api_key": "API Key (secret)",
+          "whatsapp_account": "WhatsApp Account ID"
         }
       }
     }

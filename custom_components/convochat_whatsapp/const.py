@@ -4,7 +4,7 @@ DOMAIN = "convochat_whatsapp"
 
 # Configuration keys
 CONF_API_KEY = "api_key"
-CONF_ACCOUNT_ID = "account_id"
+CONF_WHATSAPP_ACCOUNT = "whatsapp_account"
 
 # ConvoChat API
 API_BASE_URL = "https://sms.convo.chat/api"

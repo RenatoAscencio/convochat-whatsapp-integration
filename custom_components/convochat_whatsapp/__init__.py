@@ -48,44 +48,42 @@ async def async_setup(hass: HomeAssistant, config: dict):
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up ConvoChat WhatsApp from a config entry."""
     api_key = entry.data.get(CONF_API_KEY)
-    account_id = entry.data.get(CONF_ACCOUNT_ID)
+    whatsapp_account = entry.data.get(CONF_WHATSAPP_ACCOUNT)
 
     # Store the API credentials for service calls
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
         "api_key": api_key,
-        "account_id": account_id
+        "whatsapp_account": whatsapp_account
     }
 
     async def send_text(call: ServiceCall):
         """Handle send_text service call."""
         recipient = call.data["recipient"]
         message = call.data["message"]
-        priority = call.data.get("priority", 2)
+        priority = call.data.get("priority") or 2  # Ensure default if None
 
-        url = f"{API_BASE_URL}/send/text"
+        url = f"{API_BASE_URL}/send/whatsapp"
 
         form_data = aiohttp.FormData()
+        form_data.add_field("secret", api_key)
+        form_data.add_field("account", whatsapp_account)
         form_data.add_field("recipient", recipient)
+        form_data.add_field("type", "text")
         form_data.add_field("message", message)
         form_data.add_field("priority", str(priority))
 
-        headers = {
-            "X-API-Key": api_key,
-            "X-Account-Id": account_id
-        }
-
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, data=form_data, headers=headers) as response:
+                async with session.post(url, data=form_data) as response:
                     if response.status == 200:
                         result = await response.json()
-                        _LOGGER.info(f"Message sent successfully: {result}")
+                        _LOGGER.info(f"WhatsApp message sent successfully: {result}")
                     else:
                         error_text = await response.text()
-                        _LOGGER.error(f"Failed to send message: {response.status} - {error_text}")
+                        _LOGGER.error(f"Failed to send WhatsApp message: {response.status} - {error_text}")
         except Exception as e:
-            _LOGGER.error(f"Error sending message: {e}")
+            _LOGGER.error(f"Error sending WhatsApp message: {e}")
 
     async def send_media(call: ServiceCall):
         """Handle send_media service call."""
@@ -93,25 +91,23 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         media_url = call.data["media_url"]
         media_type = call.data["media_type"]
         caption = call.data.get("caption", "")
-        priority = call.data.get("priority", 2)
+        priority = call.data.get("priority") or 2  # Ensure default if None
 
-        url = f"{API_BASE_URL}/send/media"
+        url = f"{API_BASE_URL}/send/whatsapp"
 
         form_data = aiohttp.FormData()
+        form_data.add_field("secret", api_key)
+        form_data.add_field("account", whatsapp_account)
         form_data.add_field("recipient", recipient)
+        form_data.add_field("type", "media")
         form_data.add_field("media_url", media_url)
         form_data.add_field("media_type", media_type)
         form_data.add_field("message", caption)
         form_data.add_field("priority", str(priority))
 
-        headers = {
-            "X-API-Key": api_key,
-            "X-Account-Id": account_id
-        }
-
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, data=form_data, headers=headers) as response:
+                async with session.post(url, data=form_data) as response:
                     if response.status == 200:
                         result = await response.json()
                         _LOGGER.info(f"Media sent successfully: {result}")
@@ -128,26 +124,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         document_name = call.data["document_name"]
         document_type = call.data["document_type"]
         caption = call.data.get("caption", "")
-        priority = call.data.get("priority", 2)
+        priority = call.data.get("priority") or 2  # Ensure default if None
 
-        url = f"{API_BASE_URL}/send/document"
+        url = f"{API_BASE_URL}/send/whatsapp"
 
         form_data = aiohttp.FormData()
+        form_data.add_field("secret", api_key)
+        form_data.add_field("account", whatsapp_account)
         form_data.add_field("recipient", recipient)
+        form_data.add_field("type", "document")
         form_data.add_field("document_url", document_url)
         form_data.add_field("document_name", document_name)
         form_data.add_field("document_type", document_type)
         form_data.add_field("message", caption)
         form_data.add_field("priority", str(priority))
 
-        headers = {
-            "X-API-Key": api_key,
-            "X-Account-Id": account_id
-        }
-
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, data=form_data, headers=headers) as response:
+                async with session.post(url, data=form_data) as response:
                     if response.status == 200:
                         result = await response.json()
                         _LOGGER.info(f"Document sent successfully: {result}")
