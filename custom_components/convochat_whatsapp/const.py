@@ -3,11 +3,11 @@
 DOMAIN = "convochat_whatsapp"
 
 # Configuration keys
-CONF_BASE_URL = "base_url"
+CONF_API_KEY = "api_key"
+CONF_ACCOUNT_ID = "account_id"
 
-# Default values
-DEFAULT_HOST = "172.30.33.5"
-DEFAULT_PORT = 8099
+# ConvoChat API
+API_BASE_URL = "https://sms.convo.chat/api"
 
 # Service names
 SERVICE_SEND_TEXT = "send_text"

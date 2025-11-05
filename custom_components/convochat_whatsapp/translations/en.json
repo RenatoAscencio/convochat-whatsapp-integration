@@ -3,15 +3,16 @@
     "step": {
       "user": {
         "title": "ConvoChat WhatsApp Configuration",
-        "description": "Configure the ConvoChat WhatsApp Gateway connection. Make sure the addon is installed and running.",
+        "description": "Configure your ConvoChat API credentials. Get these from https://convo.chat",
         "data": {
-          "host": "Host",
-          "port": "Port"
+          "api_key": "API Key",
+          "account_id": "Account ID"
         }
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to the gateway",
+      "cannot_connect": "Failed to connect to ConvoChat API",
+      "invalid_auth": "Invalid API credentials",
       "unknown": "Unexpected error"
     },
     "abort": {
@@ -22,10 +23,10 @@
     "step": {
       "init": {
         "title": "ConvoChat WhatsApp Options",
-        "description": "Update the connection settings",
+        "description": "Update your ConvoChat API credentials",
         "data": {
-          "host": "Host",
-          "port": "Port"
+          "api_key": "API Key",
+          "account_id": "Account ID"
         }
       }
     }

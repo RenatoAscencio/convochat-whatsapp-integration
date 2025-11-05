@@ -1,29 +1,25 @@
 # ConvoChat WhatsApp Integration for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Custom Home Assistant integration that provides native WhatsApp messaging services through the ConvoChat API.
+Standalone Home Assistant integration that provides native WhatsApp messaging services directly through the ConvoChat API.
 
 ## Features
 
 - Native Home Assistant services for WhatsApp messaging
 - Send text messages, images, videos, audio, and documents
-- Integration with Home Assistant automations
+- Direct connection to ConvoChat API (no addon required!)
 - UI configuration through Home Assistant settings
 - Priority message support
-- Works with the ConvoChat WhatsApp Gateway addon
+- Fully standalone integration
 
 ## Prerequisites
 
-1. **ConvoChat WhatsApp Gateway Addon** - You must have the addon installed and running
-   - Repository: https://github.com/RenatoAscencio/homeassistant-whatsapp-addon
-   - The addon provides the HTTP API that this integration connects to
-
-2. **ConvoChat Account** - Active account with credits
-   - Sign up at: https://convo.chat
-   - Configure your API credentials in the addon
+**ConvoChat Account** - Active account with API credentials
+- Sign up at: https://convo.chat
+- Get your API Key and Account ID from the ConvoChat dashboard
 
 ## Installation
 
@@ -50,9 +46,10 @@ Custom Home Assistant integration that provides native WhatsApp messaging servic
 1. Go to **Settings** → **Devices & Services**
 2. Click **+ ADD INTEGRATION**
 3. Search for "ConvoChat WhatsApp"
-4. Enter the configuration:
-   - **Host**: IP address of the addon (default: 172.30.33.5)
-   - **Port**: Port number of the addon (default: 8099)
+4. Enter your ConvoChat API credentials:
+   - **API Key**: Your ConvoChat API key
+   - **Account ID**: Your ConvoChat account ID
+   - Get these from: https://convo.chat dashboard
 5. Click **Submit**
 
 The integration will register three services automatically:
@@ -226,34 +223,42 @@ Always use E.164 international format:
 
 ### Services not appearing
 
-1. Verify the addon is running (green in Settings → Add-ons)
-2. Check that the integration is configured (Settings → Devices & Services)
-3. Restart Home Assistant
-4. Check logs: Settings → System → Logs
+1. Check that the integration is configured (Settings → Devices & Services)
+2. Restart Home Assistant
+3. Check logs: Settings → System → Logs
+4. Verify integration loaded successfully in logs
 
 ### Messages not being delivered
 
 1. Verify phone number format (E.164)
-2. Check addon logs: Settings → Add-ons → ConvoChat WhatsApp → Log
-3. Verify you have credits: Check logs for "Remaining credits"
-4. Test the addon directly from its web interface
+2. Check integration logs for errors
+3. Verify API credentials are correct
+4. Check ConvoChat account has sufficient credits
+5. Test API credentials at https://convo.chat dashboard
 
-### Connection errors
+### Authentication errors
 
-1. Verify the host and port in the integration configuration
-2. Make sure the addon is started
-3. Check network connectivity between Home Assistant and the addon
+1. Verify API Key is correct
+2. Verify Account ID is correct
+3. Check credentials at https://convo.chat dashboard
+4. Ensure your ConvoChat account is active
 
 ## Support
 
 - Integration Issues: https://github.com/RenatoAscencio/convochat-whatsapp-integration/issues
-- Addon Issues: https://github.com/RenatoAscencio/homeassistant-whatsapp-addon/issues
-- ConvoChat API: https://sms.convo.chat/docs
+- ConvoChat API Documentation: https://sms.convo.chat/docs
+- ConvoChat Support: https://convo.chat
 
-## Related Projects
+## Migration from v1.x (Addon-based)
 
-- **ConvoChat WhatsApp Gateway Addon**: https://github.com/RenatoAscencio/homeassistant-whatsapp-addon
-- **Automation Examples**: See AUTOMATION_GUIDE.md in the addon repository
+If you were using v1.x with the addon:
+
+1. Uninstall the old integration (if installed)
+2. **Keep the addon running** (for now, you can uninstall it after testing v2.0)
+3. Install v2.0 from HACS
+4. Configure with your API Key and Account ID
+5. Test that messages work
+6. Once confirmed working, you can uninstall the addon
 
 ## License
 

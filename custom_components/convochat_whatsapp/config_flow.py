@@ -3,15 +3,11 @@ import logging
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import callback
 
-from .const import DOMAIN
+from .const import DOMAIN, CONF_API_KEY, CONF_ACCOUNT_ID
 
 _LOGGER = logging.getLogger(__name__)
-
-DEFAULT_HOST = "172.30.33.5"
-DEFAULT_PORT = 8099
 
 
 class ConvoChatWhatsAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -32,8 +28,8 @@ class ConvoChatWhatsAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         # Show form
         data_schema = vol.Schema({
-            vol.Optional(CONF_HOST, default=DEFAULT_HOST): str,
-            vol.Optional(CONF_PORT, default=DEFAULT_PORT): int,
+            vol.Required(CONF_API_KEY): str,
+            vol.Required(CONF_ACCOUNT_ID): str,
         })
 
         return self.async_show_form(
@@ -64,13 +60,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema({
-                vol.Optional(
-                    CONF_HOST,
-                    default=self.config_entry.data.get(CONF_HOST, DEFAULT_HOST)
+                vol.Required(
+                    CONF_API_KEY,
+                    default=self.config_entry.data.get(CONF_API_KEY)
                 ): str,
-                vol.Optional(
-                    CONF_PORT,
-                    default=self.config_entry.data.get(CONF_PORT, DEFAULT_PORT)
-                ): int,
+                vol.Required(
+                    CONF_ACCOUNT_ID,
+                    default=self.config_entry.data.get(CONF_ACCOUNT_ID)
+                ): str,
             })
         )

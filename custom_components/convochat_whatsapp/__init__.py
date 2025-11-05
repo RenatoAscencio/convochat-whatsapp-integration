@@ -4,14 +4,16 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST, CONF_PORT
 import aiohttp
 
-_LOGGER = logging.getLogger(__name__)
+from .const import (
+    DOMAIN,
+    CONF_API_KEY,
+    CONF_ACCOUNT_ID,
+    API_BASE_URL,
+)
 
-DOMAIN = "convochat_whatsapp"
-DEFAULT_HOST = "172.30.33.5"
-DEFAULT_PORT = 8099
+_LOGGER = logging.getLogger(__name__)
 
 # Service schemas
 SERVICE_SEND_TEXT_SCHEMA = vol.Schema({
@@ -45,15 +47,14 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up ConvoChat WhatsApp from a config entry."""
-    host = entry.data.get(CONF_HOST, DEFAULT_HOST)
-    port = entry.data.get(CONF_PORT, DEFAULT_PORT)
+    api_key = entry.data.get(CONF_API_KEY)
+    account_id = entry.data.get(CONF_ACCOUNT_ID)
 
-    base_url = f"http://{host}:{port}"
-
-    # Store the base URL for service calls
+    # Store the API credentials for service calls
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
-        "base_url": base_url
+        "api_key": api_key,
+        "account_id": account_id
     }
 
     async def send_text(call: ServiceCall):
@@ -62,21 +63,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         message = call.data["message"]
         priority = call.data.get("priority", 2)
 
-        url = f"{base_url}/send/text"
-        payload = {
-            "recipient": recipient,
-            "message": message,
-            "priority": priority
+        url = f"{API_BASE_URL}/send/text"
+
+        form_data = aiohttp.FormData()
+        form_data.add_field("recipient", recipient)
+        form_data.add_field("message", message)
+        form_data.add_field("priority", str(priority))
+
+        headers = {
+            "X-API-Key": api_key,
+            "X-Account-Id": account_id
         }
 
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, json=payload) as response:
+                async with session.post(url, data=form_data, headers=headers) as response:
                     if response.status == 200:
                         result = await response.json()
                         _LOGGER.info(f"Message sent successfully: {result}")
                     else:
-                        _LOGGER.error(f"Failed to send message: {response.status}")
+                        error_text = await response.text()
+                        _LOGGER.error(f"Failed to send message: {response.status} - {error_text}")
         except Exception as e:
             _LOGGER.error(f"Error sending message: {e}")
 
@@ -88,23 +95,29 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         caption = call.data.get("caption", "")
         priority = call.data.get("priority", 2)
 
-        url = f"{base_url}/send/media"
-        payload = {
-            "recipient": recipient,
-            "media_url": media_url,
-            "media_type": media_type,
-            "message": caption,
-            "priority": priority
+        url = f"{API_BASE_URL}/send/media"
+
+        form_data = aiohttp.FormData()
+        form_data.add_field("recipient", recipient)
+        form_data.add_field("media_url", media_url)
+        form_data.add_field("media_type", media_type)
+        form_data.add_field("message", caption)
+        form_data.add_field("priority", str(priority))
+
+        headers = {
+            "X-API-Key": api_key,
+            "X-Account-Id": account_id
         }
 
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, json=payload) as response:
+                async with session.post(url, data=form_data, headers=headers) as response:
                     if response.status == 200:
                         result = await response.json()
                         _LOGGER.info(f"Media sent successfully: {result}")
                     else:
-                        _LOGGER.error(f"Failed to send media: {response.status}")
+                        error_text = await response.text()
+                        _LOGGER.error(f"Failed to send media: {response.status} - {error_text}")
         except Exception as e:
             _LOGGER.error(f"Error sending media: {e}")
 
@@ -117,24 +130,30 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         caption = call.data.get("caption", "")
         priority = call.data.get("priority", 2)
 
-        url = f"{base_url}/send/document"
-        payload = {
-            "recipient": recipient,
-            "document_url": document_url,
-            "document_name": document_name,
-            "document_type": document_type,
-            "message": caption,
-            "priority": priority
+        url = f"{API_BASE_URL}/send/document"
+
+        form_data = aiohttp.FormData()
+        form_data.add_field("recipient", recipient)
+        form_data.add_field("document_url", document_url)
+        form_data.add_field("document_name", document_name)
+        form_data.add_field("document_type", document_type)
+        form_data.add_field("message", caption)
+        form_data.add_field("priority", str(priority))
+
+        headers = {
+            "X-API-Key": api_key,
+            "X-Account-Id": account_id
         }
 
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, json=payload) as response:
+                async with session.post(url, data=form_data, headers=headers) as response:
                     if response.status == 200:
                         result = await response.json()
                         _LOGGER.info(f"Document sent successfully: {result}")
                     else:
-                        _LOGGER.error(f"Failed to send document: {response.status}")
+                        error_text = await response.text()
+                        _LOGGER.error(f"Failed to send document: {response.status} - {error_text}")
         except Exception as e:
             _LOGGER.error(f"Error sending document: {e}")
 
