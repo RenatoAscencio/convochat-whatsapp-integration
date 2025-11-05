@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "ConvoChat WhatsApp - API Key",
-        "description": "Enter your ConvoChat API Key. Get it from Tools → API Keys at https://convo.chat",
+        "description": "Enter your ConvoChat API Key. Get it from Tools → API Keys at https://convo.chat\n\nRequired permissions:\n• wa_send (Send WhatsApp messages)\n• wa_send_bulk (Send bulk messages)\n• get_wa_accounts (List WhatsApp accounts)\n• get_wa_sent (View sent messages)",
         "data": {
           "api_key": "API Key (secret)"
         }

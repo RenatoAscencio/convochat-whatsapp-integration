@@ -30,18 +30,30 @@ class ConvoChatWhatsAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         params={"secret": api_key, "limit": 100}
                     ) as response:
                         if response.status == 200:
-                            result = await response.json()
-                            if result.get("status") == 200 and result.get("data"):
-                                accounts = result["data"]
-                                if len(accounts) > 0:
-                                    # Store API key and show account selection
-                                    self.api_key = api_key
-                                    self.accounts = accounts
-                                    return await self.async_step_select_account()
+                            # ConvoChat API incorrectly returns Content-Type: text/html
+                            # even though the response is JSON, so we need to force parse as JSON
+                            try:
+                                text = await response.text()
+                                import json
+                                result = json.loads(text)
+
+                                if result.get("status") == 200 and result.get("data"):
+                                    accounts = result["data"]
+                                    if len(accounts) > 0:
+                                        # Store API key and show account selection
+                                        self.api_key = api_key
+                                        self.accounts = accounts
+                                        return await self.async_step_select_account()
+                                    else:
+                                        errors["base"] = "no_accounts"
+                                elif result.get("status") == 401:
+                                    errors["base"] = "invalid_auth"
                                 else:
-                                    errors["base"] = "no_accounts"
-                            else:
-                                errors["base"] = "invalid_auth"
+                                    _LOGGER.error(f"Unexpected API response: {result}")
+                                    errors["base"] = "unknown"
+                            except json.JSONDecodeError as e:
+                                _LOGGER.error(f"Failed to parse API response as JSON: {e}")
+                                errors["base"] = "cannot_connect"
                         else:
                             errors["base"] = "cannot_connect"
             except Exception as e:
