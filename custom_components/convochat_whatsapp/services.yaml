@@ -1,14 +1,15 @@
 send_text:
-  name: Send WhatsApp Text
-  description: Send a text message via WhatsApp
+  name: Send WhatsApp Text Message
+  description: Send a text message via WhatsApp using ConvoChat API
   fields:
     recipient:
-      name: Recipient
+      name: Recipient Phone Number
       description: Phone number in E.164 format (e.g., +523349426465)
       required: true
       example: "+523349426465"
       selector:
         text:
+          type: tel
     message:
       name: Message
       description: Text message to send
@@ -17,6 +18,7 @@ send_text:
       selector:
         text:
           multiline: true
+          type: text
     priority:
       name: Priority
       description: Message priority (1=high, 2=normal)
@@ -25,32 +27,25 @@ send_text:
       example: 2
       selector:
         select:
+          mode: dropdown
           options:
             - label: "High Priority"
-              value: 1
+              value: "1"
             - label: "Normal"
-              value: 2
+              value: "2"
 
 send_media:
-  name: Send WhatsApp Media
-  description: Send an image, video, or audio via WhatsApp
+  name: Send WhatsApp Media (Image/Video/Audio)
+  description: Send an image, video, or audio via WhatsApp using ConvoChat API
   fields:
     recipient:
-      name: Recipient
-      description: Phone number in E.164 format
+      name: Recipient Phone Number
+      description: Phone number in E.164 format (e.g., +523349426465)
       required: true
       example: "+523349426465"
       selector:
         text:
-    caption:
-      name: Caption
-      description: Caption for the media file
-      required: false
-      default: ""
-      example: "Photo from camera"
-      selector:
-        text:
-          multiline: true
+          type: tel
     media_url:
       name: Media URL
       description: Public URL of the image, video, or audio file
@@ -58,6 +53,7 @@ send_media:
       example: "https://example.com/image.jpg"
       selector:
         text:
+          type: url
     media_type:
       name: Media Type
       description: Type of media file
@@ -66,6 +62,7 @@ send_media:
       example: "image"
       selector:
         select:
+          mode: dropdown
           options:
             - label: "Image"
               value: "image"
@@ -73,6 +70,16 @@ send_media:
               value: "video"
             - label: "Audio"
               value: "audio"
+    caption:
+      name: Caption (Optional)
+      description: Caption for the media file
+      required: false
+      default: ""
+      example: "Photo from camera"
+      selector:
+        text:
+          multiline: true
+          type: text
     priority:
       name: Priority
       description: Message priority (1=high, 2=normal)
@@ -80,31 +87,25 @@ send_media:
       default: 2
       selector:
         select:
+          mode: dropdown
           options:
             - label: "High Priority"
-              value: 1
+              value: "1"
             - label: "Normal"
-              value: 2
+              value: "2"
 
 send_document:
-  name: Send WhatsApp Document
-  description: Send a document (PDF, DOC, XLS, etc.) via WhatsApp
+  name: Send WhatsApp Document (PDF/DOC/XLS)
+  description: Send a document (PDF, DOC, XLS, etc.) via WhatsApp using ConvoChat API
   fields:
     recipient:
-      name: Recipient
-      description: Phone number in E.164 format
+      name: Recipient Phone Number
+      description: Phone number in E.164 format (e.g., +523349426465)
       required: true
       example: "+523349426465"
       selector:
         text:
-    caption:
-      name: Caption
-      description: Caption for the document
-      required: false
-      default: ""
-      example: "Monthly report"
-      selector:
-        text:
+          type: tel
     document_url:
       name: Document URL
       description: Public URL of the document file
@@ -112,6 +113,7 @@ send_document:
       example: "https://example.com/report.pdf"
       selector:
         text:
+          type: url
     document_name:
       name: Document Name
       description: Name of the document file (with extension)
@@ -119,6 +121,7 @@ send_document:
       example: "report.pdf"
       selector:
         text:
+          type: text
     document_type:
       name: Document Type
       description: Type of document file
@@ -126,6 +129,7 @@ send_document:
       default: "pdf"
       selector:
         select:
+          mode: dropdown
           options:
             - label: "PDF"
               value: "pdf"
@@ -139,6 +143,15 @@ send_document:
               value: "xlsx"
             - label: "Text File"
               value: "txt"
+    caption:
+      name: Caption (Optional)
+      description: Caption for the document
+      required: false
+      default: ""
+      example: "Monthly report"
+      selector:
+        text:
+          type: text
     priority:
       name: Priority
       description: Message priority (1=high, 2=normal)
@@ -146,8 +159,9 @@ send_document:
       default: 2
       selector:
         select:
+          mode: dropdown
           options:
             - label: "High Priority"
-              value: 1
+              value: "1"
             - label: "Normal"
-              value: 2
+              value: "2"

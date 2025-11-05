@@ -157,26 +157,29 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         except Exception as e:
             _LOGGER.error(f"Error sending document: {e}")
 
-    # Register services
+    # Register services with supports_response=False to enable UI fields
     hass.services.async_register(
         DOMAIN,
         "send_text",
         send_text,
-        schema=SERVICE_SEND_TEXT_SCHEMA
+        schema=SERVICE_SEND_TEXT_SCHEMA,
+        supports_response=False
     )
 
     hass.services.async_register(
         DOMAIN,
         "send_media",
         send_media,
-        schema=SERVICE_SEND_MEDIA_SCHEMA
+        schema=SERVICE_SEND_MEDIA_SCHEMA,
+        supports_response=False
     )
 
     hass.services.async_register(
         DOMAIN,
         "send_document",
         send_document,
-        schema=SERVICE_SEND_DOCUMENT_SCHEMA
+        schema=SERVICE_SEND_DOCUMENT_SCHEMA,
+        supports_response=False
     )
 
     _LOGGER.info("ConvoChat WhatsApp services registered successfully")
