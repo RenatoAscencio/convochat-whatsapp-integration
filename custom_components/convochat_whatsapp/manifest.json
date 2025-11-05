@@ -1,0 +1,11 @@
+{
+  "domain": "convochat_whatsapp",
+  "name": "ConvoChat WhatsApp",
+  "codeowners": ["@RenatoAscencio"],
+  "config_flow": true,
+  "documentation": "https://github.com/RenatoAscencio/convochat-whatsapp-integration",
+  "issue_tracker": "https://github.com/RenatoAscencio/convochat-whatsapp-integration/issues",
+  "requirements": [],
+  "version": "1.0.0",
+  "iot_class": "cloud_push"
+}

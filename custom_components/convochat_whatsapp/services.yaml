@@ -1,0 +1,153 @@
+send_text:
+  name: Send WhatsApp Text
+  description: Send a text message via WhatsApp
+  fields:
+    recipient:
+      name: Recipient
+      description: Phone number in E.164 format (e.g., +523349426465)
+      required: true
+      example: "+523349426465"
+      selector:
+        text:
+    message:
+      name: Message
+      description: Text message to send
+      required: true
+      example: "Hello from Home Assistant!"
+      selector:
+        text:
+          multiline: true
+    priority:
+      name: Priority
+      description: Message priority (1=high, 2=normal)
+      required: false
+      default: 2
+      example: 2
+      selector:
+        select:
+          options:
+            - label: "High Priority"
+              value: 1
+            - label: "Normal"
+              value: 2
+
+send_media:
+  name: Send WhatsApp Media
+  description: Send an image, video, or audio via WhatsApp
+  fields:
+    recipient:
+      name: Recipient
+      description: Phone number in E.164 format
+      required: true
+      example: "+523349426465"
+      selector:
+        text:
+    caption:
+      name: Caption
+      description: Caption for the media file
+      required: false
+      default: ""
+      example: "Photo from camera"
+      selector:
+        text:
+          multiline: true
+    media_url:
+      name: Media URL
+      description: Public URL of the image, video, or audio file
+      required: true
+      example: "https://example.com/image.jpg"
+      selector:
+        text:
+    media_type:
+      name: Media Type
+      description: Type of media file
+      required: true
+      default: "image"
+      example: "image"
+      selector:
+        select:
+          options:
+            - label: "Image"
+              value: "image"
+            - label: "Video"
+              value: "video"
+            - label: "Audio"
+              value: "audio"
+    priority:
+      name: Priority
+      description: Message priority (1=high, 2=normal)
+      required: false
+      default: 2
+      selector:
+        select:
+          options:
+            - label: "High Priority"
+              value: 1
+            - label: "Normal"
+              value: 2
+
+send_document:
+  name: Send WhatsApp Document
+  description: Send a document (PDF, DOC, XLS, etc.) via WhatsApp
+  fields:
+    recipient:
+      name: Recipient
+      description: Phone number in E.164 format
+      required: true
+      example: "+523349426465"
+      selector:
+        text:
+    caption:
+      name: Caption
+      description: Caption for the document
+      required: false
+      default: ""
+      example: "Monthly report"
+      selector:
+        text:
+    document_url:
+      name: Document URL
+      description: Public URL of the document file
+      required: true
+      example: "https://example.com/report.pdf"
+      selector:
+        text:
+    document_name:
+      name: Document Name
+      description: Name of the document file (with extension)
+      required: true
+      example: "report.pdf"
+      selector:
+        text:
+    document_type:
+      name: Document Type
+      description: Type of document file
+      required: true
+      default: "pdf"
+      selector:
+        select:
+          options:
+            - label: "PDF"
+              value: "pdf"
+            - label: "Word Document (DOC)"
+              value: "doc"
+            - label: "Word Document (DOCX)"
+              value: "docx"
+            - label: "Excel (XLS)"
+              value: "xls"
+            - label: "Excel (XLSX)"
+              value: "xlsx"
+            - label: "Text File"
+              value: "txt"
+    priority:
+      name: Priority
+      description: Message priority (1=high, 2=normal)
+      required: false
+      default: 2
+      selector:
+        select:
+          options:
+            - label: "High Priority"
+              value: 1
+            - label: "Normal"
+              value: 2

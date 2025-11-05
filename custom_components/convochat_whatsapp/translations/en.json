@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ConvoChat WhatsApp Configuration",
+        "description": "Configure the ConvoChat WhatsApp Gateway connection. Make sure the addon is installed and running.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the gateway",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Integration is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ConvoChat WhatsApp Options",
+        "description": "Update the connection settings",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      }
+    }
+  }
+}
