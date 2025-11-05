@@ -84,8 +84,9 @@ class ConvoChatWhatsAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
 
         # Build account options
+        # API returns: {"id", "phone", "unique", "status", "created"}
         account_options = {
-            acc["unique"]: f"{acc['name']} ({acc['phone']})"
+            acc["unique"]: f"{acc['phone']} ({acc.get('status', 'unknown')})"
             for acc in self.accounts
         }
 
