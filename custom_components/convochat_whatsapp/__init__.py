@@ -19,7 +19,6 @@ _LOGGER = logging.getLogger(__name__)
 SERVICE_SEND_TEXT_SCHEMA = vol.Schema({
     vol.Required("recipient"): cv.string,
     vol.Required("message"): cv.string,
-    vol.Optional("priority", default=2): vol.In([1, 2]),
 })
 
 SERVICE_SEND_MEDIA_SCHEMA = vol.Schema({
@@ -27,7 +26,6 @@ SERVICE_SEND_MEDIA_SCHEMA = vol.Schema({
     vol.Required("media_url"): cv.string,
     vol.Required("media_type"): vol.In(["image", "video", "audio"]),
     vol.Optional("caption", default=""): cv.string,
-    vol.Optional("priority", default=2): vol.In([1, 2]),
 })
 
 SERVICE_SEND_DOCUMENT_SCHEMA = vol.Schema({
@@ -36,7 +34,6 @@ SERVICE_SEND_DOCUMENT_SCHEMA = vol.Schema({
     vol.Required("document_name"): cv.string,
     vol.Required("document_type"): vol.In(["pdf", "doc", "docx", "xls", "xlsx", "txt"]),
     vol.Optional("caption", default=""): cv.string,
-    vol.Optional("priority", default=2): vol.In([1, 2]),
 })
 
 
@@ -61,7 +58,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         """Handle send_text service call."""
         recipient = call.data["recipient"]
         message = call.data["message"]
-        priority = call.data.get("priority") or 2  # Ensure default if None
+        priority = 2  # Always use priority 2
 
         url = f"{API_BASE_URL}/send/whatsapp"
 
@@ -91,7 +88,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         media_url = call.data["media_url"]
         media_type = call.data["media_type"]
         caption = call.data.get("caption", "")
-        priority = call.data.get("priority") or 2  # Ensure default if None
+        priority = 2  # Always use priority 2
 
         url = f"{API_BASE_URL}/send/whatsapp"
 
@@ -124,7 +121,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         document_name = call.data["document_name"]
         document_type = call.data["document_type"]
         caption = call.data.get("caption", "")
-        priority = call.data.get("priority") or 2  # Ensure default if None
+        priority = 2  # Always use priority 2
 
         url = f"{API_BASE_URL}/send/whatsapp"
 
